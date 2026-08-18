@@ -1,0 +1,1589 @@
+:root {
+  --void: #070708;
+  --bone: #f3eadc;
+  --muted: #8a847b;
+  --copper: #c4783a;
+  --ember: #e8a35a;
+  --copper-fill: linear-gradient(
+      180deg,
+      rgba(18, 10, 6, 0.28) 0%,
+      transparent 42%,
+      rgba(12, 8, 5, 0.22) 100%
+    ),
+    linear-gradient(165deg, #b56c34 0%, #c4783a 46%, #8a4e24 100%);
+  --copper-fill-hover: linear-gradient(
+      180deg,
+      rgba(18, 10, 6, 0.18) 0%,
+      transparent 42%,
+      rgba(12, 8, 5, 0.18) 100%
+    ),
+    linear-gradient(165deg, #be753b 0%, #c4783a 46%, #935528 100%);
+  --line: rgba(243, 234, 220, 0.14);
+  /* Handoff tone between the bone sections and the copper Loop section. */
+  --seam: #e5ccb1;
+  /* Loop's base copper, promoted so the footer can pick the seam up from it. */
+  --loop-copper: #d7ad86;
+  --sans: var(--font-sans), system-ui, sans-serif;
+  --display: var(--font-display), var(--font-sans), system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+.site {
+  min-height: 100%;
+}
+
+html,
+body {
+  background: var(--void);
+  color: var(--bone);
+  font-family: var(--sans);
+}
+
+html {
+  scrollbar-width: none;
+  overflow-anchor: none;
+  overscroll-behavior: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 18px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+}
+
+.logo,
+.nav {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.bar.is-light .logo,
+.bar.is-light .nav,
+.bar.is-light .logo a,
+.bar.is-light .nav a {
+  color: #111;
+  mix-blend-mode: normal;
+}
+
+.bar.is-light .glyph {
+  background: #111;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.glyph {
+  width: 14px;
+  height: 16px;
+  background: #fff;
+  clip-path: polygon(50% 0, 100% 72%, 70% 100%, 30% 100%, 0 72%);
+}
+
+.nav {
+  display: flex;
+  gap: 26px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.launch {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--bone);
+  padding: 9px 16px;
+  line-height: 1;
+  background:
+    linear-gradient(180deg, rgba(18, 14, 10, 0.82), rgba(7, 7, 8, 0.88)) padding-box,
+    var(--copper-fill) border-box;
+  border: 1px solid transparent;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  box-shadow: 0 0 10px rgba(196, 120, 58, 0.18);
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.launch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--copper-fill);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.launch:hover {
+  color: #140e09;
+}
+
+.launch:hover::before {
+  transform: scaleX(1);
+}
+
+.launch--mute {
+  background:
+    linear-gradient(180deg, rgba(18, 14, 10, 0.82), rgba(7, 7, 8, 0.88)) padding-box,
+    linear-gradient(165deg, #7a746c 0%, #6f6a64 46%, #5c5752 100%) border-box;
+  box-shadow: 0 0 10px rgba(80, 76, 70, 0.18);
+}
+
+.launch--mute::before {
+  background: linear-gradient(165deg, #8a847b 0%, #6f6a64 46%, #5c5752 100%);
+}
+
+.stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: #000;
+}
+
+.reel {
+  position: absolute;
+  inset: 0;
+  background: #000 url("/media/poster.jpg") center / cover no-repeat;
+}
+
+.reel video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: brightness(0.62) saturate(0.85);
+  will-change: opacity, transform;
+}
+
+.site.is-boot .bar,
+.site.is-boot .hero-copy,
+.site.is-boot .tick,
+.site.is-boot .giant,
+.site.is-boot .hud {
+  opacity: 0;
+}
+
+.grade,
+.grade-cu,
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.grade-cu {
+  z-index: 1;
+  background: #8a4e24;
+  mix-blend-mode: multiply;
+  opacity: 0.28;
+}
+
+.grade {
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 55% 40%, transparent 18%, rgba(7, 7, 8, 0.55) 78%),
+    linear-gradient(180deg, rgba(7, 7, 8, 0.42) 0%, transparent 32%, rgba(7, 7, 8, 0.82) 100%);
+}
+
+.hud {
+  z-index: 5;
+}
+
+.hud svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hud-schematic {
+  stroke: rgba(243, 234, 220, 0.14);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hud-line {
+  fill: none;
+  stroke: var(--copper);
+  stroke-width: 1;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+  vector-effect: non-scaling-stroke;
+}
+
+.hud-dot {
+  fill: var(--copper);
+}
+
+.hud-cosmic {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: 0;
+  transform: translate(0, -50%);
+  pointer-events: auto;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--bone);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: none;
+  padding: 10px 16px;
+  line-height: 1;
+  background:
+    linear-gradient(180deg, rgba(18, 14, 10, 0.82), rgba(7, 7, 8, 0.88)) padding-box,
+    var(--copper-fill) border-box;
+  border: 1px solid transparent;
+  clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+  box-shadow: 0 0 10px rgba(196, 120, 58, 0.18);
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hud-cosmic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--copper-fill);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hud-cosmic:hover {
+  color: #140e09;
+  box-shadow: 0 0 12px rgba(196, 120, 58, 0.28);
+}
+
+.hud-cosmic:hover::before {
+  transform: scaleX(1);
+}
+
+.giant {
+  position: absolute;
+  left: -3vw;
+  bottom: -7vh;
+  z-index: 3;
+  font-weight: 800;
+  font-size: 26vw;
+  line-height: 0.72;
+  letter-spacing: -0.08em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(243, 234, 220, 0.55);
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-copy {
+  position: absolute;
+  z-index: 4;
+  left: 28px;
+  bottom: 72px;
+  max-width: 535px;
+}
+
+.hero-copy h1 {
+  font-family: var(--sans);
+  font-size: 42px;
+  font-weight: 700;
+  font-style: normal;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 28px;
+}
+
+.hero-copy p {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+  max-width: 459px;
+}
+
+.hero-copy .launch {
+  margin-top: 22px;
+}
+
+.hero-launch {
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  padding: 18px 36px;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  box-shadow: 0 0 14px rgba(196, 120, 58, 0.22);
+}
+
+.tick {
+  position: absolute;
+  right: 28px;
+  bottom: 72px;
+  z-index: 4;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tick b {
+  display: block;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--ember);
+}
+
+.tick span {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.atlas {
+  position: relative;
+  z-index: 1;
+  height: 100svh;
+  overflow: hidden;
+  background: #f3eadc;
+  color: #141414;
+  padding-right: 14px;
+}
+
+/*
+ * Atlas and Loop meet halfway on --seam so the 3/4 boundary has no edge to see:
+ * this ramps bone -> seam on the way out, and .loop ramps seam -> copper on the
+ * way in. Both sides are the same colour at the join.
+ */
+.atlas::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(229, 204, 177, 0) 0%, rgba(229, 204, 177, 0.72) 62%, var(--seam) 100%);
+}
+
+.atlas-inner {
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 48px 48px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
+  gap: 48px;
+  align-items: center;
+}
+
+.atlas-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 42rem;
+}
+
+.atlas-pill {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 5px 12px;
+  border: 1px solid rgba(20, 20, 20, 0.16);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #3d3d3d;
+}
+
+.atlas-copy h2 {
+  font-family: var(--sans);
+  font-size: clamp(32px, 4.2vw, 58px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  color: #141414;
+  margin-bottom: 36px;
+}
+
+.atlas-copy h2 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.atlas-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 32px;
+  margin: 0 0 36px;
+}
+
+.atlas-stat dt {
+  font-family: var(--sans);
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #2a2a2a;
+}
+
+.atlas-stat dd {
+  margin: 6px 0 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  color: #5c5752;
+}
+
+.atlas-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/*
+ * Optical alignment, not box alignment. The canvas box already sits flush with
+ * the container's right padding edge, but two things push the *visible* sphere
+ * left of the copy's left margin:
+ *   - .atlas reserves 14px on the right for the scroll track
+ *   - cobe draws the sphere at ~80% of its canvas, leaving ~10% dead space
+ * 14px + 10% of the 613px canvas ≈ 75px ≈ 12%. Nudge it back by that much so
+ * the gap left of "123k$" matches the gap right of the sphere.
+ */
+.atlas-globe {
+  --globe-nudge: 12%;
+
+  position: relative;
+  z-index: 2;
+  width: min(100%, 72svh, 640px);
+  height: min(100%, 72svh, 640px);
+  aspect-ratio: 1;
+  justify-self: center;
+  transform: translateX(var(--globe-nudge));
+}
+
+.atlas-globe > div {
+  width: 100%;
+  height: 100%;
+}
+
+.atlas-globe canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.atlas-globe canvas.is-grabbing {
+  cursor: grabbing;
+}
+
+.loop {
+  /* Tune the whole section from these two. */
+  --loop-copper: #d7ad86;
+  --loop-grain: 0.38;
+
+  position: relative;
+  z-index: 1;
+  height: 100svh;
+  overflow: hidden;
+  /* Mild copper, mottled with off-tone washes so it never reads as a flat fill. */
+  background-color: var(--loop-copper);
+  background-image:
+    /* Top layer: picks up exactly where .atlas::after leaves off, then dissolves. */
+    linear-gradient(180deg, var(--seam) 0%, rgba(229, 204, 177, 0.62) 8%, rgba(229, 204, 177, 0) 24%),
+    /* Bottom layer: flattens the mottling back to the base copper so the footer
+       has one known colour to start from instead of an uneven, grain-darkened edge. */
+    linear-gradient(180deg, transparent 82%, var(--loop-copper) 100%),
+    radial-gradient(ellipse at 16% 10%, rgba(146, 84, 40, 0.26), transparent 56%),
+    radial-gradient(ellipse at 84% 82%, rgba(112, 64, 30, 0.24), transparent 60%),
+    radial-gradient(ellipse at 66% 26%, rgba(233, 203, 176, 0.3), transparent 52%),
+    radial-gradient(ellipse at 34% 74%, rgba(168, 106, 58, 0.16), transparent 58%);
+  color: #141414;
+  padding-right: 14px;
+}
+
+/* Grain. This is what keeps the copper dirty rather than smooth. */
+.loop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Behind in-flow content, but still above .loop background. Keeping .loop-inner
+     out of its own stacking context is what lets the film blend with the copper. */
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--loop-grain);
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+  background-size: 200px 200px;
+  /* Ramp the grain in over the same distance, or the texture draws its own edge. */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 22%,
+    #000 84%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 22%,
+    #000 84%,
+    transparent 100%
+  );
+}
+
+/* Coarser speckle over the fine grain — reads as grit, not as a gradient. */
+.loop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image:
+    radial-gradient(rgba(108, 62, 28, 0.14) 0.6px, transparent 0.7px),
+    radial-gradient(rgba(90, 52, 24, 0.1) 0.5px, transparent 0.6px);
+  background-size: 7px 7px, 11px 13px;
+  background-position: 0 0, 3px 5px;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 22%,
+    #000 84%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 22%,
+    #000 84%,
+    transparent 100%
+  );
+}
+
+.loop-inner {
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 48px 48px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.loop-head {
+  flex: 0 0 auto;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.loop-head h2 {
+  font-family: var(--sans);
+  font-size: clamp(32px, 4.2vw, 58px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  color: #141414;
+}
+
+.loop-head h2 span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* Section 4 canvas: the mock console sits on the copper with real depth. */
+.loop-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse 64% 56% at 50% 50%,
+    rgba(255, 244, 232, 0.5),
+    rgba(255, 244, 232, 0) 72%
+  );
+}
+
+.app {
+  /* Set from the inspector's accent swatches at runtime. */
+  --app-accent: #c4783a;
+  --app-ink: #241c14;
+  --app-dim: #7d7268;
+  --app-line: rgba(58, 40, 24, 0.13);
+  --app-surface: #fbf7f1;
+  --app-sunk: #f1ebe2;
+
+  position: relative;
+  width: min(100%, 1320px);
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--app-line);
+  background: var(--app-surface);
+  color: var(--app-ink);
+  font-size: 12px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 28px 60px -24px rgba(58, 32, 12, 0.45),
+    0 4px 14px -6px rgba(58, 32, 12, 0.25);
+}
+
+/*
+ * Copper light travelling the card edge. The conic gradient is rotated by an
+ * animatable custom property, then masked down to a 1.5px ring so only the
+ * border lights up. Without @property support the angle simply holds still.
+ */
+@property --beam {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0turn,
+    rgba(196, 120, 58, 0.15) 0.03turn,
+    var(--copper) 0.07turn,
+    var(--ember) 0.09turn,
+    var(--copper) 0.11turn,
+    rgba(196, 120, 58, 0.15) 0.15turn,
+    transparent 0.2turn,
+    transparent 1turn
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: app-beam 5s linear infinite;
+}
+
+@keyframes app-beam {
+  to {
+    --beam: 1turn;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app::after {
+    animation: none;
+  }
+}
+
+.app button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.app :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--app-surface), 0 0 0 4px var(--app-accent);
+  border-radius: 6px;
+}
+
+/* --- title bar --- */
+.app-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--app-line);
+  background: linear-gradient(180deg, #fdfaf6, #f6f0e7);
+}
+
+.app-lights {
+  display: flex;
+  gap: 6px;
+  margin-right: 2px;
+}
+
+.app-lights i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.app-lights i:nth-child(1) { background: #d8785f; }
+.app-lights i:nth-child(2) { background: #dcab5c; }
+.app-lights i:nth-child(3) { background: #8fb08a; }
+
+.app-mark {
+  width: 12px;
+  height: 14px;
+  background: var(--app-accent);
+  clip-path: polygon(50% 0, 100% 72%, 70% 100%, 30% 100%, 0 72%);
+  transition: background 0.25s ease;
+}
+
+.app-name {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.app-pill {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--app-sunk);
+  color: var(--app-dim);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.app-status {
+  color: var(--app-dim);
+  font-size: 11px;
+}
+
+.app-bar-end {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-zoom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--app-dim);
+}
+
+.app-zoom button {
+  width: 18px;
+  line-height: 1;
+  color: var(--app-dim);
+}
+
+.app-zoom button:hover { color: var(--app-ink); }
+.app-zoom b { color: var(--app-ink); font-weight: 600; font-size: 11px; }
+
+.app-fit {
+  color: var(--app-dim);
+  font-size: 11px;
+  padding: 4px 6px;
+}
+
+.app-fit:hover { color: var(--app-ink); }
+
+.app-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: filter 0.2s ease, background 0.25s ease;
+}
+
+.app-go:hover { filter: brightness(1.08); }
+
+.app-go svg {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+
+/* --- body --- */
+
+/* The two earning paths, read as breadcrumbs across the scene strip. */
+.app-scene {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--app-line);
+  font-size: 11px;
+}
+
+.app-flow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.app-flow + .app-flow {
+  padding-left: 22px;
+  border-left: 1px solid var(--app-line);
+}
+
+.app-flow b {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Same .launch treatment as the hero CTA, sized down for the strip. */
+.app-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-cta {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  padding: 8px 15px;
+}
+
+.app-arrow {
+  width: 13px;
+  height: 6px;
+  flex: 0 0 auto;
+  background: var(--app-accent);
+  opacity: 0.85;
+  clip-path: polygon(0 40%, 62% 40%, 62% 0, 100% 50%, 62% 100%, 62% 60%, 0 60%);
+}
+
+/* The film is the canvas — full bleed inside the window frame. */
+.app-canvas {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  background: #0e0b09;
+}
+
+/* Own colours, no tint, no blend. */
+.app-film {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The shared pill is grey for the bone sections; warm it up over copper. */
+.loop .atlas-pill {
+  border-color: rgba(74, 42, 18, 0.24);
+  color: #4a2f18;
+}
+
+.floor {
+  position: relative;
+  z-index: 1;
+  height: 100svh;
+  overflow: hidden;
+  background: #f3eadc;
+  color: #141414;
+}
+
+.floor-inner {
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 84px 36px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.floor-head {
+  flex: 0 0 auto;
+  max-width: 920px;
+  margin-bottom: 22px;
+}
+
+.floor-pill {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 5px 11px;
+  border: 1px solid rgba(20, 20, 20, 0.16);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #3d3d3d;
+}
+
+.floor-head h2 {
+  font-family: var(--sans);
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  color: #141414;
+}
+
+.floor-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+}
+
+.floor-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  padding: 20px 20px 12px;
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 20px;
+  background-color: #f4eee4;
+  background-image: radial-gradient(rgba(196, 120, 58, 0.16) 1px, transparent 1px);
+  background-size: 16px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.floor-card--wide {
+  grid-column: 1 / 3;
+}
+
+.floor-card-copy {
+  position: relative;
+  z-index: 1;
+  max-width: min(34rem, 92%);
+}
+
+.floor-card--narrow .floor-card-copy,
+.floor-card--third .floor-card-copy {
+  max-width: 92%;
+}
+
+.floor-card-copy h3 {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.6vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.floor-card--third .floor-card-copy h3 {
+  white-space: nowrap;
+  font-size: clamp(15px, 1.2vw, 22px);
+}
+
+.floor-card-copy p {
+  max-width: 46ch;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.07px;
+  color: #79716b;
+}
+
+.floor-visual {
+  position: absolute;
+  left: -2%;
+  right: -8%;
+  bottom: -8%;
+  width: auto;
+  height: 58%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floor-rive {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floor-rive canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  filter: invert(1) sepia(0.42) saturate(0.38) hue-rotate(8deg) brightness(1.08) contrast(0.92);
+  mix-blend-mode: multiply;
+}
+
+.floor-card--wide .floor-visual {
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 58%;
+  bottom: -4%;
+}
+
+.floor-visual .fv-fan {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fv-spin 5.5s linear infinite;
+}
+
+.floor-visual .fv-belt {
+  animation: fv-belt 16s linear infinite;
+}
+
+.floor-visual .fv-pill {
+  animation: fv-pill 2.8s ease-in-out infinite;
+}
+
+.floor-visual .fv-pill-2 {
+  animation-delay: 0.4s;
+}
+
+.floor-visual .fv-pulse {
+  animation: fv-pulse 1.8s ease-in-out infinite;
+}
+
+.floor-visual .fv-blade {
+  animation: fv-tick 2.2s ease-in-out infinite;
+}
+
+/* GSAP drives these in the flow card, so the CSS loop must stand down. */
+.floor-visual--flow .fv-flow {
+  animation: none;
+}
+
+.floor-visual .fv-chip {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.floor-visual .fv-flow {
+  stroke-dasharray: 5 7;
+  animation: fv-dash 1s linear infinite;
+}
+
+@keyframes fv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fv-belt {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fv-tick {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fv-pill {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(18px);
+  }
+}
+
+@keyframes fv-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fv-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floor-visual * {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .atlas {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .atlas-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 88px 18px 48px;
+  }
+
+  .atlas-globe {
+    width: min(92vw, 420px);
+    height: min(92vw, 420px);
+    order: -1;
+    /* Stacked and centred below 980px — the nudge only applies side-by-side. */
+    transform: none;
+  }
+
+  .loop {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .loop-inner {
+    height: auto;
+    padding: 88px 18px 48px;
+  }
+
+  .floor {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .floor-inner {
+    height: auto;
+    padding: 88px 18px 48px;
+  }
+
+  .floor-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+
+  .floor-card--wide,
+  .floor-card--narrow,
+  .floor-card--third {
+    grid-column: auto;
+  }
+
+  .floor-card {
+    min-height: 200px;
+  }
+}
+
+.scroll-track {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  z-index: 40;
+  cursor: pointer;
+}
+
+.scroll-thumb {
+  position: absolute;
+  left: 4px;
+  width: 6px;
+  /* Same copper token the Launch button is built from. */
+  background: var(--copper-fill);
+  box-shadow: 0 0 10px rgba(196, 120, 58, 0.28);
+  will-change: transform;
+}
+
+.scroll-track:hover .scroll-thumb {
+  background: var(--copper-fill-hover);
+}
+
+@media (max-width: 720px) {
+  .nav,
+  .tick,
+  .hud {
+    display: none;
+  }
+
+  .bar {
+    padding: 16px 16px;
+    right: 14px;
+  }
+
+  .hero-copy {
+    left: 18px;
+    right: 18px;
+    bottom: 48px;
+  }
+
+  .giant {
+    font-size: 34vw;
+    bottom: 40px;
+  }
+}
+
+/* ============================================================
+   Footer — layered scene: ember glow, wordmark, grain, content
+   ============================================================ */
+
+/* Wide band, not a viewport panel — same proportions as the reference. */
+.foot {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 5 / 2;
+  min-height: 360px;
+  overflow: hidden;
+  background: var(--void);
+  color: var(--bone);
+}
+
+/* Picks the seam up from Loop's copper and sinks it into the void. */
+.foot::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 18%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    var(--loop-copper) 0%,
+    rgba(150, 92, 46, 0.62) 26%,
+    rgba(58, 34, 18, 0.34) 58%,
+    transparent 100%
+  );
+}
+
+/* Ember rising off the floor of the forge. */
+.foot-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 58% 40% at 50% 98%, rgba(232, 163, 90, 0.32), transparent 70%),
+    radial-gradient(ellipse 92% 62% at 50% 112%, rgba(196, 120, 58, 0.24), transparent 72%);
+}
+
+.foot-word {
+  position: absolute;
+  inset-inline: 0;
+  top: 20%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.foot-word span {
+  font-family: var(--display);
+  font-size: clamp(5rem, 25vw, 26rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.82;
+  white-space: nowrap;
+  /* Speckled copper fill rather than flat metal, then dissolved at the base. */
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='w'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch' seed='5'/><feColorMatrix values='0 0 0 0 0.85  0 0 0 0 0.58  0 0 0 0 0.32  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23w)'/></svg>"),
+    linear-gradient(
+      180deg,
+      rgba(104, 58, 26, 0.34) 0%,
+      rgba(168, 98, 44, 0.6) 42%,
+      rgba(232, 163, 90, 0.9) 74%,
+      rgba(243, 234, 220, 1) 100%
+    );
+  background-size: 170px 170px, 100% 100%;
+  background-repeat: repeat, no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 62%,
+    rgba(0, 0, 0, 0.45) 86%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 62%,
+    rgba(0, 0, 0, 0.45) 86%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  filter: drop-shadow(0 0 60px rgba(196, 120, 58, 0.26));
+}
+
+.foot-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.24;
+  /* Fades in so the footer's texture does not start with its own hard edge. */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 20%);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='fg'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23fg)'/></svg>");
+  background-size: 200px 200px;
+}
+
+/* Keeps the content band legible over the wordmark. */
+.foot-veil {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 56%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(7, 7, 8, 0.95) 0%,
+    rgba(7, 7, 8, 0.6) 42%,
+    transparent 100%
+  );
+}
+
+.foot-inner {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 0 clamp(20px, 3.4vw, 56px) 26px;
+}
+
+.foot-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: end;
+}
+
+.foot-col h3,
+.foot-links h3 {
+  margin-bottom: 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(243, 234, 220, 0.55);
+}
+
+.foot-list {
+  list-style: none;
+  display: grid;
+  gap: 5px;
+  font-size: 14px;
+  color: rgba(243, 234, 220, 0.86);
+}
+
+.foot-list a {
+  transition: color 0.2s ease;
+}
+
+.foot-list a:hover {
+  color: var(--ember);
+}
+
+.foot-quiet {
+  color: rgba(243, 234, 220, 0.5);
+}
+
+.foot-socials {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 14px;
+  color: rgba(243, 234, 220, 0.7);
+}
+
+.foot-socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s ease;
+}
+
+.foot-socials a:hover {
+  color: var(--bone);
+}
+
+.foot-socials span {
+  font-size: 11px;
+  color: var(--copper);
+}
+
+.foot-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.foot-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.foot-note {
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(243, 234, 220, 0.55);
+  text-align: center;
+}
+
+.foot-links {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: clamp(24px, 3vw, 48px);
+  justify-content: end;
+  text-align: right;
+}
+
+.foot-legal {
+  max-width: 1280px;
+  margin: 26px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 22px;
+  font-size: 12px;
+  color: rgba(243, 234, 220, 0.5);
+}
+
+.foot-legal a {
+  transition: color 0.2s ease;
+}
+
+.foot-legal a:hover {
+  color: rgba(243, 234, 220, 0.85);
+}
+
+.foot-copy {
+  margin-left: auto;
+}
+
+@media (max-width: 980px) {
+  .foot {
+    /* Stacked layout needs its own height, so the band ratio is dropped. */
+    aspect-ratio: auto;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .foot-word {
+    position: relative;
+    top: 0;
+    padding: 96px 0 0;
+  }
+
+  .foot-veil {
+    height: 70%;
+  }
+
+  .foot-inner {
+    position: relative;
+    padding: 36px 18px 28px;
+  }
+
+  .foot-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .foot-cta {
+    align-items: flex-start;
+  }
+
+  .foot-cta-row {
+    justify-content: flex-start;
+  }
+
+  .foot-note {
+    text-align: left;
+  }
+
+  .foot-links {
+    justify-content: start;
+    text-align: left;
+  }
+
+  .foot-copy {
+    margin-left: 0;
+  }
+}
