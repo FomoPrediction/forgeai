@@ -133,11 +133,24 @@ export function Footer() {
               <div key={col.title}>
                 <h3>{col.title}</h3>
                 <ul className="foot-list">
-                  {col.links.map((l) => (
-                    <li key={l.label}>
-                      <a href={l.href}>{l.label}</a>
-                    </li>
-                  ))}
+                  {col.links.map((l) => {
+                    // Documentation is a separate destination, so it opens in
+                    // its own tab. Everything else in this footer is an anchor
+                    // on the page the reader is already on.
+                    const away = l.href.startsWith("/docs");
+                    return (
+                      <li key={l.label}>
+                        <a
+                          href={l.href}
+                          {...(away
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                        >
+                          {l.label}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}

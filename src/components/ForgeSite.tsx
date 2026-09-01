@@ -120,10 +120,13 @@ export function ForgeSite() {
           <a href="#vault">Vault</a>
           <a href="#atlas">Atlas</a>
           <a href="#loop">Loop</a>
-          {/* The only entry here that leaves the page. It sits last because the
-              others are anchors on this one, and a reader who wants the
-              mechanics is done with the poster. */}
-          <a href="/docs">Docs</a>
+          {/* The only entry here that leaves the page, so it opens in its own
+              tab: the others are anchors on this one, and somebody reading the
+              mechanics usually wants the poster still behind them.
+              `rel` is not optional with `target`, it closes the opener. */}
+          <a href="/docs" target="_blank" rel="noopener noreferrer">
+            Docs
+          </a>
         </nav>
         <a className="launch" href={appLinks.launch}>
           Launch
