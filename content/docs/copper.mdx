@@ -1,0 +1,80 @@
+---
+title: Copper points
+description: The score that measures contribution. What earns it, what it unlocks, and what it is not.
+---
+
+<PageImage src="copper" alt="" caption="A ledger kept by hand, held open by a copper weight." />
+
+## What Copper is
+
+A ledger of verified work. It does not transfer, it is not a token, and holding
+it is not a claim on anything. It exists so that contribution is measured from
+the first day rather than from whenever a token launches.
+
+The ledger is append only. A balance is the sum of a wallet's rows, never a
+stored number, so a wrong award is corrected by writing its opposite and both
+entries stay visible.
+
+## How it is earned
+
+<Flow
+  steps={[
+    { label: "Verified tasks", detail: "On mint", hue: "copper" },
+    { label: "Staking", detail: "While the deposit sits", hue: "aqua" },
+    { label: "Referrals", detail: "When yours contribute", hue: "blue" },
+    { label: "Streak", detail: "Per qualifying day", hue: "violet" },
+  ]}
+/>
+
+| Source | When it pays |
+| --- | --- |
+| Verified tasks | On mint. Pass a task's check, mint its receipt, and Copper lands with it |
+| Staking | Continuously, alongside machine-hour yield, for as long as the asset stays staked |
+| Referrals | When somebody you referred passes a task or stakes. Both count, and both keep paying |
+| Daily streak | A day counts once you clear that day's task requirement |
+
+<Callout title="Rates are not published">
+What a task pays is not a fixed number and is not listed anywhere. It varies
+with difficulty and with the quality of what was submitted, and it is adjusted
+between seasons.
+
+This is deliberate. A published rate is a target: the moment a number is public,
+the cheapest way to raise it becomes the strategy, and the data gets worse. Your
+own balance and history are always visible in the app.
+</Callout>
+
+## Tiers
+
+<Stats
+  items={[
+    { value: "Ember", label: "Where everyone starts", hue: "copper" },
+    { value: "Forge", label: "Higher limits, priority in the queue", hue: "aqua" },
+    { value: "Crucible", label: "No limit, and a vote on what ships", hue: "blue" },
+  ]}
+/>
+
+Four tiers, earned by contribution. Each one raises what you can do rather than
+paying you more directly.
+
+| Tier | What it changes |
+| --- | --- |
+| Ember | Where everyone starts. Base submission limit, base yield |
+| Anvil | A higher daily submission limit, a yield boost, early access to new tracks |
+| Forge | Higher again, a larger yield boost, priority in the simulator queue |
+| Crucible | No submission limit, the largest yield boost, a vote on which tracks ship next |
+
+Thresholds move between seasons and are not published. The app shows your
+current tier and how far along you are toward the next one, which is the part
+that is useful to you; the exact number is the part that is only useful to
+somebody optimising against it.
+
+Tiers are earned by contribution, never by deposit size. A large depositor who
+has never completed a task sits at Ember.
+
+## Streak
+
+Clear the day's task requirement and the day counts. Miss a day and the count
+returns to zero, but anything a streak has already unlocked stays yours.
+
+The requirement is a whole number of verified tasks, not a proportion: falling
+one short is the same as doing none that day.

@@ -1,0 +1,68 @@
+---
+title: Welcome to FORGE
+description: Stake assets, earn from billed machine-hours.
+---
+
+<PageImage src="index" alt="" caption="A workshop floor, one machine at work in a band of light." />
+
+FORGE runs fleets of physical machines and bills for the hours they work. Stake
+an asset into the pool and you earn a share of what those hours are billed at.
+
+<Split>
+  <Side title="Stakers" hue="aqua">
+    <p>Deposit stablecoins, blue-chip crypto or tokenised assets. Earn from
+    machine-hours that have been billed and collected.</p>
+  </Side>
+  <Side title="Contributors" hue="copper">
+    <p>Record the robotics data the machines are trained on. Every verified task
+    mints a receipt onchain.</p>
+  </Side>
+</Split>
+
+## How the yield is produced
+
+<Flow
+  steps={[
+    { label: "Stake", detail: "An asset enters the pool", hue: "aqua" },
+    { label: "Machines work", detail: "Fleets run booked hours", hue: "copper" },
+    { label: "Hours are billed", detail: "Customers pay for the time used", hue: "blue" },
+    { label: "Stakers are paid", detail: "Revenue accrues to every position", hue: "violet" },
+  ]}
+/>
+
+The rate is a share of billed hours, so it rises when the fleet is busy and
+falls when it is quiet.
+
+## What you can stake
+
+| Group | Assets |
+| --- | --- |
+| Stablecoins | USDC, USDT |
+| Blue-chip crypto | ETH, WBTC |
+| Tokenised equities | Held as themselves, so the position carries the equity's price as well as the yield |
+| Tokenised commodities | Same, for metals and energy |
+
+What you stake is what the position holds.
+
+## The data programme
+
+Machines have to be trained, and robotics training data has to be recorded by
+people doing physical things: moving the mug, saying the sentence, photographing
+the shelf.
+
+FORGE runs a [task programme](/docs/tasks) for exactly that. Contribution is
+scored in [Copper](/docs/copper).
+
+<Callout title="Read this before planning around Copper" type="warn">
+Copper is a record of contribution and a **potential future reward**. Rates and
+season terms are decided when a season closes and are not published in advance.
+</Callout>
+
+## Where to start
+
+<Cards>
+  <Card title="Staking" href="/docs/staking" description="What you can stake, how the rate is set, and how withdrawals work." />
+  <Card title="How it works" href="/docs/how-it-works" description="Machine-hours, billing, and where a staked asset sits." />
+  <Card title="Tasks and receipts" href="/docs/tasks" description="The data programme and what proves a task was done." />
+  <Card title="Tokenomics" href="/docs/tokenomics" description="FORGE supply, allocation and unlocks." />
+</Cards>

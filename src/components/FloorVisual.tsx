@@ -228,10 +228,16 @@ function StakeFlowMark() {
     <svg
       ref={root}
       className="floor-visual floor-visual--flow"
-      viewBox="0 0 920 220"
+      viewBox="0 0 1020 220"
       preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
     >
+      {/*
+        Reading order is the causal order: capital comes in, it buys machine
+        time, and the yield is what those machines billed. An earlier version
+        put yield in the middle, which read as though the yield were funding
+        the hardware rather than coming out of it.
+      */}
       <Bucket x={36} y={42} label="Assets" />
       <g transform="translate(36 42)">
         <g transform="translate(78 12)">
@@ -258,7 +264,17 @@ function StakeFlowMark() {
 
       <FlowArrow x={250} y={118} />
 
-      <Bucket x={270} y={40}>
+      <Bucket x={270} y={42} w={400} label="GPU and Robots" />
+      <g transform="translate(325 84) scale(0.44)">
+        <GpuUnit x={0} />
+      </g>
+      <g transform="translate(547 28) scale(0.72)">
+        <FlowRobot />
+      </g>
+
+      <FlowArrow x={726} y={118} />
+
+      <Bucket x={790} y={40}>
         <text
           x="108"
           y="147"
@@ -281,7 +297,7 @@ function StakeFlowMark() {
           net
         </text>
       </Bucket>
-      <g transform="translate(300 40)">
+      <g transform="translate(820 40)">
         <g className="fv-dollar">
           <circle cx="78" cy="92" r="38" fill={ink} />
           <circle cx="78" cy="92" r="32" fill="none" stroke={cream} strokeWidth="2.2" />
@@ -297,15 +313,6 @@ function StakeFlowMark() {
         </g>
       </g>
 
-      <FlowArrow x={432} y={118} />
-
-      <Bucket x={465} y={42} w={400} label="GPU and Robots" />
-      <g transform="translate(520 84) scale(0.44)">
-        <GpuUnit x={0} />
-      </g>
-      <g transform="translate(742 28) scale(0.72)">
-        <FlowRobot />
-      </g>
     </svg>
   );
 }

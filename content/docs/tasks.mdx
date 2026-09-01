@@ -1,0 +1,87 @@
+---
+title: Tasks and receipts
+description: How robotics training data gets recorded, checked, and proven.
+---
+
+<PageImage src="tasks" alt="" caption="A lamp, a notebook and a microphone. Where the data is recorded." />
+
+Robots learn from recordings of physical work. That data does not exist on the
+internet and cannot be scraped: somebody has to move the mug, say the sentence,
+photograph the shelf.
+
+The task programme pays people to record it and gives them a permanent record
+that they did.
+
+<Flow
+  steps={[
+    { label: "Start", detail: "A task opens and the clock starts", hue: "aqua" },
+    { label: "Record", detail: "Audio, a trajectory, or a capture", hue: "blue" },
+    { label: "Check", detail: "The submission is verified", hue: "copper" },
+    { label: "Mint", detail: "A receipt is written onchain", hue: "violet" },
+  ]}
+/>
+
+## What a task is
+
+| Kind | What you do |
+| --- | --- |
+| Simulator | Complete a manipulation or navigation goal in a physics scene |
+| Capture | Record audio, video or photographs of a described situation |
+| Author | Write instructions, labels or corrections |
+| Review | Judge other contributors' submissions |
+
+Each one states its own accept condition before you start. A task whose
+condition cannot be checked by a machine is not published, because a task that
+needs a human to eyeball it is a task that can be farmed.
+
+## How a submission is checked
+
+<Split>
+  <Side title="Replayed" hue="copper">
+    <p>Simulator work is re-run server side against the same physics the browser
+    used. The simulator is the only thing that can say a mug ended up on the
+    coaster, so it is asked rather than trusted.</p>
+  </Side>
+  <Side title="Inspected" hue="aqua">
+    <p>Captures are checked for what they are: a file that is really audio, of a
+    plausible length, that has not been submitted before. The container is read
+    from the bytes, not from what the browser called it.</p>
+  </Side>
+</Split>
+
+<Callout title="What the protocol does not claim" type="warn">
+No contract can hear whether a recording is a retelling or a fan running. A
+backend checks what it can and signs for it, which makes that signer a trusted
+party rather than a formality. It is named in the contract, it can be rotated,
+and minting can be paused.
+</Callout>
+
+## The receipt
+
+A passed submission mints a receipt: an ERC-721 token, permanently locked to the
+wallet that earned it under ERC-5192.
+
+<Stats
+  items={[
+    { value: "Soulbound", label: "It cannot be transferred or sold", hue: "copper" },
+    { value: "One tx", label: "Fee and mint in a single confirmation", hue: "aqua" },
+    { value: "Self-resolving", label: "Artwork and metadata do not depend on our servers", hue: "blue" },
+  ]}
+/>
+
+It is soulbound on purpose. A receipt is evidence that a particular person did a
+particular piece of work, and a bought proof of work proves nothing.
+
+The task is encoded in the token id rather than stored beside it, so a wallet
+can tell which task a receipt belongs to without asking anything of ours.
+
+## What it costs
+
+A small fixed fee in the network's native asset, paid in the same transaction as
+the mint. It exists so that the record has a cost, not so the protocol lives on
+it. The fee is set on the contract and is adjustable by governance.
+
+## What it earns
+
+[Copper](/docs/copper), on mint. Copper is a contribution score and a potential
+future reward, not a payment and not a token.

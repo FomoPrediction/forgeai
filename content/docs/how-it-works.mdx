@@ -1,0 +1,99 @@
+---
+title: How it works
+description: Machine-hours, billing, and where a staked asset actually sits.
+---
+
+<PageImage src="how-it-works" alt="" caption="An hour meter on a workshop wall. The unit everything here is priced in." />
+
+One sentence: machines work, the hours are billed, and stakers are paid from
+what is collected.
+
+<Loop
+  nodes={[
+    {
+      label: "Capital is staked",
+      detail: "Assets enter the pool. They are not sold, lent out, or converted.",
+    },
+    {
+      label: "Fleets are put to work",
+      detail: "Machines run booked hours for customers who need physical work done.",
+    },
+    {
+      label: "Hours are billed and collected",
+      detail: "Revenue is metered per hour worked, not estimated and not projected.",
+    },
+    {
+      label: "Stakers are paid",
+      detail: "Collected revenue accrues to every position, in proportion to what it staked.",
+    },
+  ]}
+  caption="More staked capital funds more fleet, which bills more hours."
+/>
+
+## What a machine-hour is
+
+The unit the whole system is priced in. One machine, working, for one hour,
+billed to a customer.
+
+An hour was either worked and billed or it was not, so the revenue that reaches
+stakers ties back to specific hours.
+
+<Stats
+  items={[
+    { value: "Metered", label: "Billed per hour worked, not per hour available", hue: "copper" },
+    { value: "Collected", label: "Paid out of revenue received, not invoiced", hue: "aqua" },
+    { value: "Pro rata", label: "Split by share of the pool", hue: "blue" },
+  ]}
+/>
+
+## What sets the rate
+
+<Split>
+  <Side title="Utilisation" hue="copper">
+    <p>The share of the fleet that is actually booked. An idle machine bills
+    nothing, so a quiet month is a lower rate rather than a subsidised one.</p>
+  </Side>
+  <Side title="Price per hour" hue="aqua">
+    <p>What the work is worth. Different tasks and different hardware bill at
+    different rates, and the mix moves the blended figure.</p>
+  </Side>
+</Split>
+
+The published rate is trailing: what was collected, divided by what was
+staked.
+
+## What is onchain and what is not
+
+A machine is a physical object in a building, and the hours it works are
+recorded by the systems that operate it.
+
+| Onchain | Offchain |
+| --- | --- |
+| Stakes, positions and shares | The fleet, and its maintenance |
+| Distributions to stakers | Customer contracts and billing |
+| Task receipts | Operating the machines |
+| Governance parameters | Collection |
+
+The chain settles who is owed what.
+
+## Risks worth naming
+
+<Callout title="The rate moves with the work" type="warn">
+A quiet quarter pays less. A fleet that loses a customer pays less. The rate
+follows billed hours.
+</Callout>
+
+<Callout title="Withdrawals are not always instant">
+Capital backing machines that are mid-contract cannot leave on demand.
+Withdrawals run through a queue, and the app shows an estimate against the
+current book before you commit.
+</Callout>
+
+## The data programme
+
+Separate from staking, and worth not confusing with it. The
+[task programme](/docs/tasks) records robotics training data and mints a receipt
+for every verified submission. Contribution is scored in
+[Copper](/docs/copper).
+
+It runs alongside staking and shares the protocol's treasury.

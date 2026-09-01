@@ -1,0 +1,55 @@
+---
+title: Staking
+description: What you can stake, how the rate is set, and how withdrawals work.
+---
+
+<PageImage src="staking" alt="" caption="A strongbox wired to a machine. Staked capital, at work." />
+
+Stake an asset, hold a position, earn a share of billed machine-hours.
+
+<Flow
+  steps={[
+    { label: "Stake", detail: "Pick an asset and an amount", hue: "aqua" },
+    { label: "Hold", detail: "The position earns while it sits", hue: "blue" },
+    { label: "Accrue", detail: "Collected revenue lands pro rata", hue: "copper" },
+    { label: "Unstake", detail: "Through the queue, when you want out", hue: "violet" },
+  ]}
+/>
+
+## What you can stake
+
+| Group | Assets | What the position holds |
+| --- | --- | --- |
+| Stablecoins | USDC, USDT | Dollars. The yield is a dollar yield |
+| Blue-chip crypto | ETH, WBTC | The asset itself, so its price moves your position too |
+| Tokenised equities | Held as themselves | The equity's price, plus the yield |
+| Tokenised commodities | Metals and energy | The commodity's price, plus the yield |
+
+Every asset does the same job in the pool.
+
+## How the rate is set
+
+Revenue collected from billed machine-hours, divided by what was staked over
+the same period. A trailing figure, published after the fact.
+
+The app shows the rate each asset actually earned.
+
+## Withdrawals
+
+Capital that is not currently backing a booked machine can leave straight away.
+Capital that is cannot: it is released as those hours are worked and collected.
+
+So withdrawals run through a queue, and the estimate you are shown is built from
+the current book rather than a nominal number.
+
+<Callout title="Why there is a queue at all" type="warn">
+A pool that promised instant exit while its capital sat behind month-long
+bookings would be promising something it cannot always do. The queue is the
+alternative to discovering that during the one week everybody asks at once.
+</Callout>
+
+## What staking also earns
+
+Positions accrue [Copper](/docs/copper) for as long as they are staked. Copper
+is a contribution score and a potential future reward. It is not interest, not a
+token, and it is not part of the rate quoted above.

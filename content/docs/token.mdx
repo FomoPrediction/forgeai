@@ -1,0 +1,119 @@
+---
+title: The FORGE token
+description: What holders decide, what staking backstops, and what the token explicitly is not.
+---
+
+<PageImage src="token" alt="" caption="Brass scales on a bench. What governance actually weighs." />
+
+## What holders decide
+
+<Split>
+  <Side title="Credit parameters" hue="copper">
+    <p>Which hardware qualifies as collateral, the reference rate, and the
+    limits a fleet can borrow against.</p>
+  </Side>
+  <Side title="Protocol parameters" hue="aqua">
+    <p>The mint fee, the treasury's spend, which task tracks ship, and the
+    upgrades the contracts accept.</p>
+  </Side>
+</Split>
+
+Governance is not advisory here. Each of these is a value a contract reads, and
+changing it changes what the protocol does the moment the vote settles.
+
+| Parameter | What it controls |
+| --- | --- |
+| Task catalogue | Which tasks are open, what each one accepts, and the receipt it mints |
+| Verification standard | What a task must clear to pass, and which tasks may pass on a shape check alone |
+| Receipt price | The default mint fee and any per-task override, in ETH |
+| Copper rate | What verified work pays, and how much of a season's pool each source draws |
+| Deposit spread | The share of machine-hour interest the protocol keeps against the share depositors receive |
+| Treasury spending | Every payment out of the reserve, individually |
+| The attestor | Which key the contract accepts signatures from, and whether minting is paused |
+
+<Callout title="The attestor is the one that matters" type="warn">
+Whatever that key signs, the contract mints. If it is ever compromised, the
+response is to pause and rotate, and both are governance actions. It is worth
+understanding before holding the token: this is the single point where the
+protocol trusts something off chain.
+</Callout>
+
+## Staking and the backstop
+
+FORGE can be staked. Staked tokens earn a share of protocol revenue and stand
+behind a shortfall: if a borrower defaults past what the collateral covers, the
+staking module makes depositors whole first.
+
+That is a real risk, not a formality. Staking pays more than holding because it
+can lose more than holding. Unstaking has a cooldown, set by governance, so the
+backstop cannot empty itself in the hour it is needed.
+
+## How a decision is made
+
+<Steps>
+
+<Step>
+
+### Proposal
+
+Anybody above the proposal threshold can put one up. It names the exact
+parameter and the exact new value.
+
+</Step>
+
+<Step>
+
+### Discussion
+
+A fixed window before voting opens, so a proposal cannot be passed before anyone
+has read it.
+
+</Step>
+
+<Step>
+
+### Vote
+
+One token, one vote, with a quorum. Staked FORGE votes.
+
+</Step>
+
+<Step>
+
+### Timelock
+
+A passed proposal waits before it executes. Anyone who disagrees with the
+outcome has time to leave first.
+
+</Step>
+
+</Steps>
+
+## Limits
+
+FORGE is not equity. It is not a share of revenue, not a claim on treasury
+assets, and not a promise of a payment. Its function is constrained to what the
+contracts do, and nothing in this document creates a right beyond that.
+
+It also does not buy receipts. A receipt is soulbound proof that a specific
+person did a specific task, and no amount of FORGE produces one. See
+[Tokenomics](/docs/tokenomics) for supply and unlocks.
+
+## Networks
+
+FORGE launches on **Robinhood Chain**. Testing runs on Base Sepolia until the
+mainnet deployment.
+
+| | Network | What runs there |
+| --- | --- | --- |
+| Mainnet | Robinhood Chain | The token, the receipt contract, and the treasury |
+| Testnet | Base Sepolia | The same contracts, redeployed, with no real value |
+
+Moving between them is configuration rather than a rewrite. The contracts hold
+their own price, read no external feed, and take their EIP-712 domain from
+whichever chain they are deployed on, so a network is an address and an RPC.
+
+<Callout title="One address per network">
+A receipt minted on the testnet is a testnet receipt. Nothing bridges, and
+nothing is migrated: the mainnet contract starts its own numbering.
+</Callout>

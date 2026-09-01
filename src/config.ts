@@ -1,3 +1,19 @@
+/**
+ * The dashboard app is a separate Next deployment (Robotics/app, port 3001 in
+ * dev). Every "Launch" affordance reads from here, so the destination changes
+ * in one place rather than in four components.
+ *
+ * NEXT_PUBLIC_* is inlined at build time, so a deploy needs the var set before
+ * `next build`, not at runtime.
+ */
+export const appUrl =
+  process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001";
+
+export const appLinks = {
+  launch: appUrl,
+  vault: `${appUrl}/vaults`,
+} as const;
+
 export const scroll = {
   thumbMinPx: 48,
   trackPad: 8,
@@ -94,7 +110,7 @@ export const atlasBlock = {
     { value: "17+", label: "GPU trays billed" },
     { value: "18+", label: "Tasks posted" },
   ],
-  launch: { label: "Launch App", href: "#vault" },
+  launch: { label: "Launch App", href: appLinks.launch },
   tasks: { label: "Tasks", href: "#vault" },
 } as const;
 
@@ -110,7 +126,7 @@ export const loopApp = {
     { id: "tasks", steps: ["Complete tasks", "Earn points and rewards"] },
   ],
   actions: [
-    { id: "vault", label: "Enter Vault", href: "#vault" },
+    { id: "vault", label: "Enter Vault", href: appLinks.vault },
     { id: "tasks", label: "Tasks", href: "#vault" },
   ],
 } as const;
@@ -128,7 +144,7 @@ export const footerBlock = {
     { label: "Telegram", href: "https://telegram.org" },
   ],
   ctas: [
-    { label: "Launch App", href: "#vault", primary: true },
+    { label: "Launch App", href: appLinks.launch, primary: true },
     { label: "Tasks", href: "#vault", primary: false },
   ],
   note: "Stake once · Machines earn · Yield is billed machine-hours",
@@ -147,6 +163,15 @@ export const footerBlock = {
         { label: "How it works", href: "#loop" },
         { label: "Tasks", href: "#vault" },
         { label: "Contact", href: "#footer" },
+      ],
+    },
+    {
+      title: "Docs",
+      links: [
+        { label: "What FORGE is", href: "/docs" },
+        { label: "Copper points", href: "/docs/copper" },
+        { label: "Staking", href: "/docs/staking" },
+        { label: "Tokenomics", href: "/docs/tokenomics" },
       ],
     },
   ],

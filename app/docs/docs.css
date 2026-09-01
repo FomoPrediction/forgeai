@@ -1,0 +1,362 @@
+/*
+ * Documentation theme.
+ *
+ * Fumadocs supplies the structure: sidebar, table of contents, search, the
+ * breadcrumb, previous/next, code blocks, callouts, and a typographic scale
+ * that has already been argued about by people who build docs for a living.
+ * What it does not supply is a brand, so that is all this file does.
+ *
+ * Scoped by import, not by selector. Only app/docs/layout.tsx pulls this in, so
+ * Tailwind's preflight and every rule below reach the /docs tree and nothing
+ * else. The landing page never downloads it.
+ */
+/*
+ * `source()` sets where Tailwind looks, and without it this file generated
+ * almost nothing.
+ *
+ * Tailwind v4 takes its scan root from the stylesheet's own directory, which
+ * here is app/docs. Every class the page needs lives outside that: the MDX in
+ * content/, the charts in src/, and Fumadocs' own compiled components. The
+ * build produced a 66KB file with one padding rule in it, which is why the
+ * article sat flush against the sidebar with no column padding at all.
+ */
+@import "tailwindcss" source("../../");
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+/*
+ * The real directory, not the symlink.
+ *
+ * pnpm links node_modules/fumadocs-ui at a store path, and a @source glob
+ * resolved through that link finds only part of the library: the sidebar's
+ * classes were generated and the column padding's were not, which is why the
+ * article sat under the sidebar rather than beside it.
+ */
+@source "../../node_modules/.pnpm/fumadocs-ui@15.8.5_@types+r_beec8b9431ed075e03e1ce09bb7a30d2/node_modules/fumadocs-ui/dist/**/*.js";
+@source "../../content/**/*.mdx";
+@source "../../src/docs/**/*.tsx";
+
+/*
+ * FORGE, mapped onto Fumadocs' own tokens.
+ *
+ * Colours are given in oklch because that is the space the preset reasons in;
+ * handing it hex would work but would put two colour models in one file and
+ * make the next person converting between them.
+ *
+ * Light mode is bone paper with copper. Dark is the site's own void with ember,
+ * which is the brighter step: copper on near-black is too dim to be a link.
+ */
+:root {
+  --color-fd-background: oklch(0.982 0.006 84);
+  --color-fd-foreground: oklch(0.22 0.012 62);
+  --color-fd-muted: oklch(0.958 0.008 84);
+  --color-fd-muted-foreground: oklch(0.52 0.014 62);
+  --color-fd-popover: oklch(0.995 0.004 84);
+  --color-fd-popover-foreground: oklch(0.22 0.012 62);
+  --color-fd-card: oklch(0.995 0.004 84);
+  --color-fd-card-foreground: oklch(0.22 0.012 62);
+  --color-fd-border: oklch(0.9 0.012 74);
+  --color-fd-primary: oklch(0.58 0.13 52);
+  --color-fd-primary-foreground: oklch(0.99 0.005 84);
+  --color-fd-secondary: oklch(0.955 0.01 80);
+  --color-fd-secondary-foreground: oklch(0.28 0.012 62);
+  --color-fd-accent: oklch(0.94 0.02 72);
+  --color-fd-accent-foreground: oklch(0.24 0.014 62);
+  --color-fd-ring: oklch(0.58 0.13 52);
+}
+
+.dark {
+  /* #070708, the landing page's void, so the two surfaces are the same black. */
+  --color-fd-background: oklch(0.145 0.003 286);
+  --color-fd-foreground: oklch(0.94 0.014 84);
+  --color-fd-muted: oklch(0.2 0.004 286);
+  --color-fd-muted-foreground: oklch(0.72 0.012 78);
+  --color-fd-popover: oklch(0.185 0.004 286);
+  --color-fd-popover-foreground: oklch(0.94 0.014 84);
+  --color-fd-card: oklch(0.185 0.004 286);
+  --color-fd-card-foreground: oklch(0.94 0.014 84);
+  --color-fd-border: oklch(0.29 0.006 286);
+  /* Ember, not copper: the darker step drops under 4.5:1 as a link here. */
+  --color-fd-primary: oklch(0.79 0.11 62);
+  --color-fd-primary-foreground: oklch(0.17 0.01 62);
+  --color-fd-secondary: oklch(0.22 0.005 286);
+  --color-fd-secondary-foreground: oklch(0.9 0.012 84);
+  --color-fd-accent: oklch(0.25 0.008 286);
+  --color-fd-accent-foreground: oklch(0.94 0.014 84);
+  --color-fd-ring: oklch(0.79 0.11 62);
+}
+
+/*
+ * The two faces are already on <html>, set by next/font in the root layout as
+ * --font-sans and --font-display. Redeclaring --font-sans in @theme would be
+ * circular, and the inline value on <html> outranks a stylesheet anyway, so
+ * body text picks up Inter Tight without anything here.
+ */
+
+/* Headings take the display face, as they do on the landing page. Body text
+   deliberately does not: Syne is a poster type and tires at 16px. */
+#nd-docs-layout h1,
+#nd-docs-layout h2,
+#nd-docs-layout h3,
+#nd-nav a[href="/docs"] {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+/*
+ * The brand's own tokens, for the components this documentation adds.
+ *
+ * Fumadocs' scale covers prose. A flow diagram, a numbered step and a stat tile
+ * are ours, and they read these rather than the fd- set so that a change to the
+ * accent moves the product's furniture without touching the framework's.
+ */
+:root {
+  --doc-copper: #a85f2b;
+  --doc-ember: #8a4e24;
+  --doc-ink: var(--color-fd-foreground);
+  --doc-dim: var(--color-fd-muted-foreground);
+  --doc-line: var(--color-fd-border);
+  --doc-line-strong: color-mix(in srgb, var(--color-fd-border) 100%, #000 14%);
+  --doc-panel: var(--color-fd-card);
+  --doc-panel-2: var(--color-fd-muted);
+}
+
+.dark {
+  --doc-copper: #c4783a;
+  --doc-ember: #e8a35a;
+  --doc-line-strong: color-mix(in srgb, var(--color-fd-border) 100%, #fff 12%);
+}
+
+/*
+ * The notch.
+ *
+ * The same silhouette as the product's buttons: a corner cut top-left and
+ * bottom-right. It is the one shape the brand owns, and using it here is what
+ * makes a step in a diagram and a control in the app read as the same family.
+ */
+.doc-notch {
+  border-radius: 0;
+  clip-path: polygon(
+    7px 0,
+    100% 0,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    0 100%,
+    0 7px
+  );
+}
+
+/* A figure's frame. One rule, one panel, no shadow: these sit inside a column
+   of prose and a raised card would push them out of it. */
+.doc-fig {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: var(--doc-panel);
+}
+
+/* The step number. Copper on its own tint, so the sequence is readable before
+   any of the labels are. */
+.doc-step-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--doc-copper) 18%, transparent);
+  color: var(--doc-copper);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Sidebar section headings.
+ *
+ * Fumadocs renders a separator as a plain paragraph, which set it in the same
+ * size and colour as the links beneath it: "Depositors" looked like a page you
+ * could open rather than the name of the group under it. Small caps and a wider
+ * track make it a label.
+ */
+#nd-sidebar p:not([class*="text-"]) {
+  margin-top: 22px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--doc-dim);
+}
+
+/* The active page keeps a copper rule at its left edge, so the marker survives
+   at a glance rather than resting on a fill alone. */
+#nd-sidebar a[data-active="true"] {
+  box-shadow: inset 2px 0 0 var(--doc-copper);
+}
+
+/*
+ * The product's button, in the documentation.
+ *
+ * Black face, copper edge, notched corner, uppercase and tracked. It is the
+ * control the app uses for its primary action, and a docs site whose buttons
+ * are generic rounded rectangles reads as a different product from the one it
+ * is describing.
+ *
+ * The edge is a border-box gradient over a padding-box face, which is how a
+ * one pixel copper rule is drawn on a black fill without a second element.
+ */
+.doc-btn {
+  --btn-face: linear-gradient(#141110, #141110);
+  --btn-edge: linear-gradient(140deg, #e8a35a, #a85f2b 55%, #6d3d1c);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: 1px solid transparent;
+  background: var(--btn-face) padding-box, var(--btn-edge) border-box;
+  color: #f3eadc;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0;
+  clip-path: polygon(
+    7px 0,
+    100% 0,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    0 100%,
+    0 7px
+  );
+  transition: box-shadow 0.2s;
+}
+
+.doc-btn:hover {
+  box-shadow: 0 0 14px rgba(196, 120, 58, 0.35);
+}
+
+/*
+ * Cards, callouts and code blocks take the same corner.
+ *
+ * Fumadocs rounds everything to the same radius, which is correct for a
+ * framework and wrong for this brand: the notch is the shape the product is
+ * built out of, so the containers wear it too and the page stops looking like
+ * a default theme with the colours swapped.
+ */
+#nd-docs-layout a[data-card],
+#nd-docs-layout .fd-card,
+#nd-docs-layout figure[data-rehype-pretty-code-figure],
+#nd-docs-layout div[class*="rounded-lg"][class*="border"] {
+  border-radius: 0;
+  clip-path: polygon(
+    9px 0,
+    100% 0,
+    100% calc(100% - 9px),
+    calc(100% - 9px) 100%,
+    0 100%,
+    0 9px
+  );
+}
+
+/* A card's copper edge on hover, so the grid on the home page answers a pointer
+   the way the app's controls do. */
+#nd-docs-layout a[data-card]:hover {
+  border-color: var(--doc-copper);
+}
+
+/*
+ * Sidebar links, as the product draws them.
+ *
+ * The app's navigation is a row on its own surface with a hairline around it,
+ * not a bare text link that tints on hover. Matching it here is the difference
+ * between a documentation site that belongs to the product and a default theme
+ * standing next to it.
+ */
+#nd-sidebar a[data-active] {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 3px;
+  padding: 8px 11px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--doc-dim);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#nd-sidebar a[data-active="false"]:hover {
+  border-color: var(--doc-line);
+  background: var(--color-fd-card);
+  color: var(--doc-ink);
+}
+
+/* The current page is a raised row, and keeps the copper rule at its edge so
+   the marker does not rest on a fill alone. */
+#nd-sidebar a[data-active="true"] {
+  border-color: var(--doc-line);
+  background: var(--color-fd-card);
+  color: var(--doc-ink);
+  font-weight: 500;
+  box-shadow:
+    inset 2px 0 0 var(--doc-copper),
+    0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+/*
+ * The loop.
+ *
+ * It was four headings and four paragraphs in a bare grid: correct information
+ * with no shape, which is what a reader means when they ask where the design
+ * is. Each node is now a panel of its own, numbered, on a ruled ground, so the
+ * eye can count the steps before reading any of them.
+ */
+.doc-loop {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .doc-loop {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.doc-loop li {
+  display: flex;
+  gap: 11px;
+  padding: 14px;
+  border: 1px solid var(--doc-line);
+  background: var(--doc-panel-2);
+  border-radius: 0;
+  clip-path: polygon(
+    7px 0,
+    100% 0,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    0 100%,
+    0 7px
+  );
+}
+
+.doc-loop-t {
+  margin: 1px 0 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--doc-ink);
+}
+
+.doc-loop-d {
+  margin: 5px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--doc-dim);
+}

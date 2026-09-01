@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import { heroClips, hudCta, hudPins } from "../config";
+import { appLinks, heroClips, hudCta, hudPins } from "../config";
 import { gsap, setupGsap } from "../lib/gsap";
 import { bootReel } from "../lib/reel";
 import { bootScroll } from "../lib/scroll";
@@ -120,8 +120,12 @@ export function ForgeSite() {
           <a href="#vault">Vault</a>
           <a href="#atlas">Atlas</a>
           <a href="#loop">Loop</a>
+          {/* The only entry here that leaves the page. It sits last because the
+              others are anchors on this one, and a reader who wants the
+              mechanics is done with the poster. */}
+          <a href="/docs">Docs</a>
         </nav>
-        <a className="launch" href="#vault">
+        <a className="launch" href={appLinks.launch}>
           Launch
         </a>
       </header>
@@ -201,7 +205,7 @@ export function ForgeSite() {
               staked tokenized assets. GPUs, robot cells, and training data compounding
               in one loop.
             </p>
-            <a className="launch hero-launch" href="#vault">
+            <a className="launch hero-launch" href={appLinks.launch}>
               Launch App
             </a>
           </div>

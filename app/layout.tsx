@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter_Tight, Syne } from "next/font/google";
-import "./globals.css";
 
 const sans = Inter_Tight({
   subsets: ["latin"],
@@ -25,7 +24,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${display.variable}`}
+      // The docs theme provider stamps `class="dark"` and a color-scheme on
+      // this element after hydration, which the server cannot know about.
+      suppressHydrationWarning
+    >
       <head>
         {/*
           Only the first frame and the first clip block the hero. The reel
